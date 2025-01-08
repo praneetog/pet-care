@@ -5,10 +5,31 @@ const url = process.env.MONGO_URL;
 mongoose.connect(url)
 
 const userSchema = new mongoose.Schema({
-    fullName: String,
-    phone: String,
-    email: String,
-    password: String
+    fullName: {
+        type: String,
+        required: true,
+        trim: true,
+        maxLength: 30
+    },
+    phone: {
+        type: String,
+        required: true,
+        trim: true,
+        length: 10,
+        unique: true
+    },
+    email: {
+        type: String,
+        required: true,
+        trim: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 8
+    }
 });
 
 const User = mongoose.model('User', userSchema);

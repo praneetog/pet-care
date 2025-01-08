@@ -13,35 +13,44 @@ const signupBody = zod.object({
 
 //Signup
 router.post("/signup", async (req, res) => {
-    const { success } = signupBody.safeParse(req.body)
+    const { success } = signupBody.safeParse(req.body);
     if (!success) {
         return res.status(411).json({
             message: "Incorrect inputs"
-        })
+        });
     }
 
+    // Check for existing user by email or phone
     const existingUser = await User.findOne({
-        fullName: req.body.fullName
-    })
+        $or: [
+            { email: req.body.email },
+            { phone: req.body.phone }
+        ]
+    });
 
     if (existingUser) {
-        return res.status(411).json({
-            message: "Email already taken"
-        })
+        return res.json({
+            status: "411",
+            message: existingUser.email === req.body.email 
+                ? "Email already taken" 
+                : "Phone already taken"
+        });
     }
 
+    // Create a new user
     const user = await User.create({
         fullName: req.body.fullName,
         phone: req.body.phone,
         email: req.body.email,
         password: req.body.password
-    })
+    });
     const userId = user._id;
 
     res.json({
         message: "User created successfully"
-    })
-})
+    });
+});
+
 
 //Signin
 const signinBody = zod.object({
@@ -64,7 +73,7 @@ router.post("/signin", async (req, res) => {
 
     if (user) {
         res.json({
-            "msg" : "Signed in"
+            message: "Signed in"
         })
         return;
     }
