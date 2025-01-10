@@ -1,9 +1,146 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; // Import the arrow icon
+import dogFoot from "../assets/dogFoot.png";
+import dogFoot2 from "../assets/dogFoot2.png";
 
 const Profile = () => {
-  return (
-    <div>Profile</div>
-  )
-}
+  const [userData, setUserData] = useState(null);
+  const navigate = useNavigate();
 
-export default Profile
+  // Extract initials from full name
+  const getInitials = (name) => {
+    if (!name) return ""; // Handle case where name is undefined
+    const nameArray = name.split(" ");
+    if (nameArray.length === 1) return nameArray[0].charAt(0).toUpperCase(); // For single name
+    return (
+      nameArray[0].charAt(0).toUpperCase() +
+      nameArray[1].charAt(0).toUpperCase() // First letter of first and last name
+    );
+  };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      // Redirect to signin if no token is found (not logged in)
+      navigate("/signin");
+    }
+
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/user/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUserData(response.data);
+      } catch (error) {
+        console.error("Error fetching profile data:", error);
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  // Handle Logout
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // Clear the token from localStorage
+    localStorage.removeItem("fullName"); // Remove user name from localStorage
+    navigate("/home"); // Redirect to home page
+  };
+
+  // Handle Back Button
+  const handleBack = () => {
+    navigate("/home");
+  };
+
+  return (
+    <div className="h-full w-full">
+      <div className="bg-[#F2E3BC] flex flex-col gap-14 py-20">
+        {/* Back Button */}
+        <div className="absolute top-6 left-6 md:top-10 md:left-10 lg:top-12 lg:left-12 cursor-pointer">
+          <FontAwesomeIcon
+            icon={faArrowLeft}
+            size="xl"
+            className="text-[#031D44] hover:scale-110 ease-in duration-200"
+            onClick={handleBack}
+          />
+        </div>
+
+        {/* Paw Images */}
+        <div className="absolute right-[15%] bottom-[50%] md:right-[72%] md:bottom-[80%] lg:right-[72%] lg:bottom-[70%]">
+          <img
+            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
+            src={dogFoot2}
+            alt="Bottom Right"
+          />
+        </div>
+        <div className="absolute right-[20%] bottom-[65%] md:right-[30%] md:bottom-[75%] lg:right-[35%] lg:bottom-[60%]">
+          <img
+            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-35 -rotate-90"
+            src={dogFoot}
+            alt="Top Left"
+          />
+        </div>
+        <div className="absolute right-[60%] bottom-[70%] md:right-[55%] md:bottom-[50%] lg:right-[60%] lg:bottom-[30%]">
+          <img
+            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
+            src={dogFoot2}
+            alt="Bottom Left"
+          />
+        </div>
+        <div className="absolute right-[65%] bottom-[85%] md:right-[8%] md:bottom-[45%] lg:right-[10%] lg:bottom-[10%]">
+          <img
+            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-35 -rotate-90"
+            src={dogFoot}
+            alt="Top Right"
+          />
+        </div>
+
+        <div className="flex justify-center items-center">
+          {userData && (
+            <div className="flex items-center justify-center w-32 h-32 md:w-48 md:h-48 bg-[#031D44] text-[#F2E3BC] rounded-full cursor-pointer text-5xl font-bold">
+              {getInitials(userData.fullName)}
+            </div>
+          )}
+        </div>
+
+        {userData ? (
+          <div className="flex flex-col justify-center items-center md:gap-5">
+            <h1 className="text-4xl md:text-6xl text-[#031D44] font-extrabold">
+              {userData.fullName}
+            </h1>
+            <p className="text-[#031D44] text-md md:text-xl font-bold mt-4">
+              Email: {userData.email}
+            </p>
+            <p className="text-[#031D44] text-md md:text-xl font-bold mt-2">
+              Phone: {userData.phone}
+            </p>
+            {/* Add other user details here */}
+
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="flex justify-center text-center bg-[#031D44] text-[#F2E3BC] md:text-2xl font-bold lg:text-3xl px-6 py-2 md:px-16 md:py-6 mt-16 rounded-full"
+            >
+              Logout
+            </button>
+          </div>
+        ) : (
+          <p>Loading...</p>
+        )}
+      </div>
+
+      <div className="">
+        <div className="bg-[#031D44] text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold py-20 lg:py-28">
+          Bookings
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;

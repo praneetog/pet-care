@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const zod = require("zod");
 const { User } = require("../db");
+const { authMiddleware } = require("../middleware");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../config");
+
 
 const signupBody = zod.object({
     fullName: zod.string(),
@@ -46,8 +50,14 @@ router.post("/signup", async (req, res) => {
     });
     const userId = user._id;
 
+    const token = jwt.sign({
+        userId
+    }, JWT_SECRET);
+
     res.json({
-        message: "User created successfully"
+        message: "User created successfully",
+        token: token,
+        fullName: user.fullName
     });
 });
 
@@ -72,7 +82,13 @@ router.post("/signin", async (req, res) => {
     });
 
     if (user) {
+        const token = jwt.sign({
+            userId: user._id
+        }, JWT_SECRET);
+
         res.json({
+            token: token,
+            fullName: user.fullName,
             message: "Signed in"
         })
         return;
@@ -83,5 +99,31 @@ router.post("/signin", async (req, res) => {
         message: "Error while logging in"
     })
 })
+
+//Profile
+router.get("/profile", authMiddleware, async (req, res) => {
+    try {
+        // Fetch user data using the `userId` from the middleware
+        const user = await User.findById(req.userId).select("fullName phone email");
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        // Return user profile data
+        res.json({
+            fullName: user.fullName,
+            phone: user.phone,
+            email: user.email
+        });
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+        res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+});
 
 module.exports = router;

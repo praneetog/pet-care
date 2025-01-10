@@ -1,7 +1,7 @@
 import { InputBox } from "../components/InputBox";
 import { Button } from "../components/Button";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import loginDog from "../assets/loginDog.png";
@@ -12,6 +12,13 @@ const Signin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // If user is already logged in, navigate to the home page directly
+    if (localStorage.getItem("token")) {
+      navigate("/home");
+    }
+  }, [navigate]);
 
   return (
     <div className="bg-[#F2E3BC] relative flex h-screen w-screen overflow-hidden">
@@ -84,14 +91,15 @@ const Signin = () => {
                   password,
                 }
               );
-              console.log(response.data)
+              localStorage.setItem("token", response.data.token)
+              localStorage.setItem("fullName", response.data.fullName);
               navigate("/home");
             }}
             label={"Sign in"}
           />
           </div>
           <div className="bg-[#F2E3BC]">
-            Already have an Account? <Link to={"/signin"}>Sign In</Link>
+            Don't have an Account? <Link to={"/signup"}>Sign Up</Link>
           </div>
         </div>
       </div>

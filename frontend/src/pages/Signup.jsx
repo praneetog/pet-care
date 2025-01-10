@@ -94,16 +94,16 @@ const Signup = () => {
           <div className="bg-[#F2E3BC] w-[60%] p-4 mt-3">
             <Button
               onClick={async () => {
-                const response = await axios.post(
-                  "http://localhost:3000/user/signup",
+                const response = await axios.post("http://localhost:3000/user/signup",
                   {
                     fullName,
                     phone,
                     email,
                     password,
                   }
-                )
-                console.log(response.data.message);
+                );
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("fullName", response.data.fullName);
                 navigate("/home");
               }}
               label={"Sign up"}

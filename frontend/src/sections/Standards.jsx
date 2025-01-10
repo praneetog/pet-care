@@ -4,17 +4,17 @@ import petWalking from "../assets/petWalking.png"
 
 const Standards = () => {
   return (
-    <div id="standards" className="h-screen w-screen flex flex-col justify-center items-center bg-white mt-36 md:mt-2 lg:mt-80">
+    <div id="services" className="h-full w-full flex flex-col gap-16 md:gap-20 lg:gap-24 justify-center items-center bg-white py-12 md:py-20 lg:py-40">
       {/* Heading */}
-      <div className="text-2xl md:text-5xl font-bold text-[#031D44] mt-24">
+      <div className="text-3xl md:text-5xl font-extrabold text-[#031D44]">
         Our Pet Care Standards
       </div>
 
       {/* Cards */}
-      <div className="w-[80%] flex flex-col justify-center items-center gap-20">
+      <div className="w-[80%] flex flex-col justify-center items-center gap-16 md:gap-20">
 
         {/* Pet Nursing */}
-        <div className="flex max-md:flex-col justify-center items-center gap-2 border-0 shadow-2xl px-10 py-6 lg:px-20 lg:py-10 rounded-3xl mt-20">
+        <div className="flex max-md:flex-col justify-center items-center gap-2 border-0 shadow-2xl px-10 py-6 lg:px-20 lg:py-10 rounded-3xl">
             {/* Image Div */}
             <div className="w-full md:w-[40%] max-md:flex max-md:justify-center">
                 <img className="h-40 w-40 lg:h-72 lg:w-72 object-cover rounded-full" src={petNursing} alt="" />

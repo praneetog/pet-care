@@ -5,37 +5,63 @@ import grooming from "../assets/grooming.svg";
 import store from "../assets/store.svg";
 import dogFoot from "../assets/dogFoot.png";
 import dogFoot2 from "../assets/dogFoot2.png";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faXmark } from "@fortawesome/free-solid-svg-icons"; // Import the specific icon
+import { Link, useNavigate } from "react-router-dom";
 
 const Main = () => {
   const [nav, setNav] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedName = localStorage.getItem("fullName");
+    const token = localStorage.getItem("token");
+    if (storedName) {
+      setUserName(storedName);
+    }
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  // Extract initials from full name
+  const getInitials = (name) => {
+    const nameArray = name.split(" ");
+    if (nameArray.length === 1) return nameArray[0].charAt(0); // For single name
+    return nameArray[0].charAt(0) + nameArray[1].charAt(0); // First letter of first and last name
+  };
+
   const handleNav = () => {
     setNav(!nav);
   };
 
   return (
-    <div id="main" className="bg-[#FCF0CC] lg:h-screen lg:w-screen scroll-smooth flex flex-col gap-10 lg:gap-0 max-md:pb-10">
+    <div
+      id="main"
+      className="bg-[#FCF0CC] h-full w-full scroll-smooth flex flex-col gap-10 lg:gap-0 max-md:pb-10"
+    >
       {nav ? (
         <div className="md:hidden">
-        <img className="h-14 absolute top-4 left-4" src={Logo} />
-        <FontAwesomeIcon
-          icon={faXmark}
-          size="lg" // Optional: Controls the size of the icon
-          onClick={handleNav}
-          className="absolute top-7 right-7 z-[99] cursor-pointer hover:scale-110"
-        />
+          <img className="h-14 absolute top-4 left-4" src={Logo} />
+          <FontAwesomeIcon
+            icon={faXmark}
+            size="lg" // Optional: Controls the size of the icon
+            onClick={handleNav}
+            className="absolute top-7 right-7 z-[99] cursor-pointer hover:scale-110"
+          />
         </div>
       ) : (
         <div className="md:hidden">
-        <img className="h-14 absolute top-4 left-4" src={Logo} />        
-        <AiOutlineMenu
-          size={20}
-          onClick={handleNav}
-          className="absolute top-7 right-7 z-[99] cursor-pointer hover:scale-110"
-        />
+          <img className="h-14 absolute top-4 left-4" src={Logo} />
+          <AiOutlineMenu
+            size={20}
+            onClick={handleNav}
+            className="absolute top-7 right-7 z-[99] cursor-pointer hover:scale-110"
+          />
         </div>
       )}
 
@@ -44,41 +70,50 @@ const Main = () => {
           <a
             onClick={handleNav}
             href="#main"
-            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4 cursor-pointer hover:scale-110 ease-in duration-200"
+            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
           >
             <span className="font-bold">Home</span>
           </a>
 
           <a
             onClick={handleNav}
-            href="#standards"
-            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4 cursor-pointer hover:scale-110 ease-in duration-200"
-          >
-            <span className="font-bold">About</span>
-          </a>
-
-          <a
-            onClick={handleNav}
-            href=""
-            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4 cursor-pointer hover:scale-110 ease-in duration-200"
+            href="#services"
+            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
           >
             <span className="font-bold">Services</span>
           </a>
 
           <a
             onClick={handleNav}
-            href=""
-            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4 cursor-pointer hover:scale-110 ease-in duration-200"
+            href="#about"
+            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
+          >
+            <span className="font-bold">About</span>
+          </a>
+
+          <a
+            onClick={handleNav}
+            href="#contact"
+            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
           >
             <span className="font-bold">Contact Us</span>
           </a>
 
           <a
             onClick={handleNav}
-            href="#main"
-            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4 cursor-pointer hover:scale-110 ease-in duration-200"
+            className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
           >
-            <span className="font-bold text-lg">Login/Signup</span>
+            {isLoggedIn ? 
+              (
+                <span className="font-bold text-lg">
+                  <Link to={"/profile"}>Profile</Link>
+                </span>
+              ) : (
+                <span className="font-bold text-lg">
+                  <Link to={"/signup"}>Login/Signup</Link>
+                </span>
+              )
+            }  
           </a>
         </div>
       ) : (
@@ -91,18 +126,50 @@ const Main = () => {
           <img className="h-16 lg:h-20" src={Logo} />
         </div>
         <div className="flex text-md gap-4 lg:gap-8 xl:gap-16 lg:text-xl font-semibold text-[#031D44]">
-          <div>Home</div>
-          <div>About</div>
-          <div>Services</div>
-          <div>Contact Us</div>
+          <div
+            onClick={() => (window.location.href = "#main")}
+            className="cursor-pointer hover:scale-110 ease-in duration-200"
+          >
+            Home
+          </div>
+          <div
+            onClick={() => (window.location.href = "#services")}
+            className="cursor-pointer hover:scale-110 ease-in duration-200"
+          >
+            Services
+          </div>
+          <div
+            onClick={() => (window.location.href = "#about")}
+            className="cursor-pointer hover:scale-110 ease-in duration-200"
+          >
+            About
+          </div>
+          <div
+            onClick={() => (window.location.href = "#contact")}
+            className="cursor-pointer hover:scale-110 ease-in duration-200"
+          >
+            Contact Us
+          </div>
         </div>
+
         <div className="flex justify-between items-center gap-4">
-          <div className="text-lg lg:text-xl font-semibold text-[#031D44]">
-            Login
-          </div>
-          <div className="text-lg lg:text-xl font-semibold bg-[#031D44] px-7 py-2 rounded-full text-[#F2E3BC]">
-            Sign Up
-          </div>
+          {isLoggedIn ? (
+            <div
+              className="flex items-center justify-center w-14 h-14 bg-[#031D44] text-[#F2E3BC] rounded-full cursor-pointer text-xl font-bold"
+              onClick={() => navigate("/profile")}
+            >
+              {getInitials(userName)}
+            </div>
+          ) : (
+            <>
+              <div className="text-lg lg:text-xl font-semibold text-[#031D44] hover:cursor-pointer" onClick={() => navigate("/signin")}>
+                Login
+              </div>
+              <div className="text-lg lg:text-xl font-semibold bg-[#031D44] px-7 py-2 rounded-full text-[#F2E3BC] hover:cursor-pointer" onClick={() => navigate("/signup")}>
+                Sign Up
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -165,24 +232,45 @@ const Main = () => {
         {/* Floating Bar */}
         <div className="max-lg:hidden absolute -bottom-[8%] left-1/2 transform -translate-x-1/2 bg-white flex justify-between items-center px-2 lg:px-20 w-[80%] rounded-3xl shadow-2xl py-8">
           <div className="flex gap-4 w-[33%]">
-            <img className="h-10 w-10 lg:h-16 lg:w-16 object-cover" src={healthCare} />
+            <img
+              className="h-10 w-10 lg:h-16 lg:w-16 object-cover"
+              src={healthCare}
+            />
             <div>
-              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">Health Care</div>
-              <div className="text-sm text-[#031D44]">Regular checkup for your pet.</div>
+              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">
+                Health Care
+              </div>
+              <div className="text-sm text-[#031D44]">
+                Regular checkup for your pet.
+              </div>
             </div>
           </div>
           <div className="flex gap-4 w-[33%]">
-            <img className="h-10 w-10 lg:h-16 lg:w-16 object-cover" src={grooming} />
+            <img
+              className="h-10 w-10 lg:h-16 lg:w-16 object-cover"
+              src={grooming}
+            />
             <div>
-              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">Grooming</div>
-              <div className="text-sm text-[#031D44]">Grooming is essential for every pet.</div>
+              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">
+                Grooming
+              </div>
+              <div className="text-sm text-[#031D44]">
+                Grooming is essential for every pet.
+              </div>
             </div>
           </div>
           <div className="flex gap-4 w-[33%]">
-            <img className="h-10 w-10 lg:h-16 lg:w-16 object-cover" src={store} />
+            <img
+              className="h-10 w-10 lg:h-16 lg:w-16 object-cover"
+              src={store}
+            />
             <div>
-              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">Pet Store</div>
-              <div className="text-sm text-[#031D44]">Buy pet food, toys, and other essentials.</div>
+              <div className="text-lg lg:text-2xl font-bold text-[#031D44]">
+                Pet Store
+              </div>
+              <div className="text-sm text-[#031D44]">
+                Buy pet food, toys, and other essentials.
+              </div>
             </div>
           </div>
         </div>
