@@ -215,9 +215,12 @@ const Main = () => {
             us forever.
           </div>
 
-          {/* Customer Reviews Button */}
-          <div className="bg-[#031D44] p-3 lg:p-6 w-[60%] md:w-[70%] lg:w-[45%] lg:mt-6 flex justify-center max-md:items-center md:text-lg lg:text-2xl text-[#FCF0CC] rounded-full">
-            <div>Customer Reviews</div>
+          {/* Book Now Button */}
+          <div 
+          className="bg-[#031D44] p-3 lg:p-6 w-[50%] md:w-[60%] lg:w-[40%] lg:mt-6 flex justify-center max-md:items-center md:text-xl lg:text-3xl font-bold text-[#FCF0CC] rounded-full hover:cursor-pointer hover:scale-105  ease-in duration-200"
+          onClick={() => navigate("/booking")} 
+          >
+            <div>Book Now</div>
           </div>
         </div>
 

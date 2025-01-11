@@ -34,4 +34,29 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = { User };
+const bookingSchema = new mongoose.Schema({
+    service:{
+        type:String,
+        require:true
+    },
+    appointmentDate:{
+        type:String,
+        require:true,
+    },
+    appointmentTime:{
+        type:String,
+        require:true
+    },
+    place:{
+        type:String,
+        require:true
+    },
+    user:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
+})
+
+const Booking = mongoose.model('Booking', bookingSchema);
+
+module.exports = { User, Booking };

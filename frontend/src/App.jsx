@@ -3,7 +3,7 @@ import Signup from "./pages/Signup"
 import Signin from "./pages/Signin"
 import Home from "./pages/Home"
 import Profile from "./pages/Profile"
-import Booking from "./pages/Booking";
+import BookingForm from "./pages/BookingForm";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/booking" element={<Booking />} />
+          <Route path="/booking" element={<BookingForm />} />
         </Routes>
       </BrowserRouter>
     </>

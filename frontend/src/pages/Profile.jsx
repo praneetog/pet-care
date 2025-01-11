@@ -8,6 +8,7 @@ import dogFoot2 from "../assets/dogFoot2.png";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
+  const [bookings, setBookings] = useState([]); // State to store bookings data
   const navigate = useNavigate();
 
   // Extract initials from full name
@@ -25,7 +26,6 @@ const Profile = () => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      // Redirect to signin if no token is found (not logged in)
       navigate("/signin");
     }
 
@@ -36,7 +36,9 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log(response.data); // Check if the data is returned as expected
         setUserData(response.data);
+        setBookings(response.data.booked); // Set booking data here
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -134,10 +136,30 @@ const Profile = () => {
         )}
       </div>
 
+      {/* Bookings */}
       <div className="">
         <div className="bg-[#031D44] text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold py-20 lg:py-28">
           Bookings
         </div>
+
+        {/* Booking details rendering */}
+        {bookings && bookings.length > 0 ? (
+          bookings.map((booking, index) => (
+            <div
+              key={index}
+              className="flex flex-col items-center bg-[#F2E3BC] text-[#031D44] p-6 mb-6 rounded-lg shadow-lg max-w-md mx-auto"
+            >
+              <h2 className="text-2xl font-bold mb-2">{booking.service}</h2>
+              <p className="text-lg font-semibold">{booking.place}</p>
+              <p className="text-md">{booking.appointmentDate}</p>
+              <p className="text-md">{booking.appointmentTime}</p>
+            </div>
+          ))
+        ) : (
+          <p className="text-center text-lg text-[#031D44]">
+            No bookings found
+          </p>
+        )}
       </div>
     </div>
   );
