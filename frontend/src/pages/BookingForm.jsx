@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
+import bookingDog from "../assets/bookingDog.png";
+import bookingCat from "../assets/bookingCat.png";
+import bookingCatPhone from "../assets/bookingCatPhone.png";
 
 const BookingForm = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +14,7 @@ const BookingForm = () => {
     minute: "",
     ampm: "AM",
     place: "",
-    email: ""
+    email: "",
   });
 
   const handleInputChange = (e) => {
@@ -41,14 +44,20 @@ const BookingForm = () => {
     const formattedData = {
       service: formData.service,
       appointmentDate: `${formData.day}/${formData.month}/${formData.year}`,
-      appointmentTime: `${formData.hour.padStart(2, "0")}:${formData.minute.padStart(2, "0")} ${formData.ampm}`,
+      appointmentTime: `${formData.hour.padStart(
+        2,
+        "0"
+      )}:${formData.minute.padStart(2, "0")} ${formData.ampm}`,
       place: formData.place,
-      email: formData.email
+      email: formData.email,
     };
 
     // API call to submit the form data using axios
     try {
-      const response = await axios.post("http://localhost:3000/user/booking", formattedData);
+      const response = await axios.post(
+        "http://localhost:3000/user/booking",
+        formattedData
+      );
 
       if (response.status === 200) {
         alert("Booking confirmed!");
@@ -63,12 +72,14 @@ const BookingForm = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
-      <h2 className="text-2xl font-bold mb-4">Book an Appointment</h2>
-      <form onSubmit={handleSubmit}>
+    <div className="bg-[#031D44] h-screen w-screen flex flex-col justify-center px-8">
+      <div className="flex justify-center text-3xl text-[#F2E3BC] font-bold py-10">
+        Book an Appointment
+      </div>
+      <form className="" onSubmit={handleSubmit}>
         {/* Service */}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Service</label>
+          <label className="block text-[#F2E3BC] text-lg mb-2">Service</label>
           <input
             type="text"
             name="service"
@@ -81,7 +92,9 @@ const BookingForm = () => {
 
         {/* Appointment Date */}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Appointment Date</label>
+          <label className="block text-[#F2E3BC] text-lg mb-2">
+            Appointment Date
+          </label>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -112,7 +125,9 @@ const BookingForm = () => {
 
         {/* Appointment Time */}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Appointment Time</label>
+          <label className="block text-[#F2E3BC] text-lg mb-2">
+            Appointment Time
+          </label>
           <div className="flex space-x-2">
             <input
               type="text"
@@ -144,7 +159,7 @@ const BookingForm = () => {
 
         {/* Place */}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Place</label>
+          <label className="block text-[#F2E3BC] text-lg mb-2">Place</label>
           <input
             type="text"
             name="place"
@@ -157,24 +172,30 @@ const BookingForm = () => {
 
         {/* Email */}
         <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
+          <label className="block text-[#F2E3BC] text-lg mb-2">Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleInputChange}
             placeholder="Enter your email"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded mb-8"
           />
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-        >
-          Submit Booking
-        </button>
+        <div className="w-full flex justify-center items-center">
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-[55%] bg-[#F2E3BC] text-[#031D44] py-4 rounded-full text-lg font-bold"
+          >
+            Submit Booking
+          </button>
+        </div>
+
+        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2">
+          <img src={bookingCatPhone} className="w-44" alt="" />
+        </div>
       </form>
     </div>
   );
