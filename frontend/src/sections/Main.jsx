@@ -10,12 +10,21 @@ import { AiOutlineMenu } from "react-icons/ai";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import the FontAwesomeIcon component
 import { faXmark } from "@fortawesome/free-solid-svg-icons"; // Import the specific icon
 import { Link, useNavigate } from "react-router-dom";
+import "aos/dist/aos.css";
+import AOS from "aos";
 
 const Main = () => {
   const [nav, setNav] = useState(false);
   const [userName, setUserName] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Animation duration in milliseconds
+      once: true, // Ensure animations happen only once
+    });
+  }, []);
 
   useEffect(() => {
     const storedName = localStorage.getItem("fullName");
@@ -103,17 +112,15 @@ const Main = () => {
             onClick={handleNav}
             className="w-[65%] flex justify-center items-center rounded-full shadow-md text-[#F2E3BC] bg-[#031D44] shadow-[#031D44] m-2 p-4"
           >
-            {isLoggedIn ? 
-              (
-                <span className="font-bold text-lg">
-                  <Link to={"/profile"}>Profile</Link>
-                </span>
-              ) : (
-                <span className="font-bold text-lg">
-                  <Link to={"/signup"}>Login/Signup</Link>
-                </span>
-              )
-            }  
+            {isLoggedIn ? (
+              <span className="font-bold text-lg">
+                <Link to={"/profile"}>Profile</Link>
+              </span>
+            ) : (
+              <span className="font-bold text-lg">
+                <Link to={"/signup"}>Login/Signup</Link>
+              </span>
+            )}
           </a>
         </div>
       ) : (
@@ -162,10 +169,16 @@ const Main = () => {
             </div>
           ) : (
             <>
-              <div className="text-lg lg:text-xl font-semibold text-[#031D44] hover:cursor-pointer" onClick={() => navigate("/signin")}>
+              <div
+                className="text-lg lg:text-xl font-semibold text-[#031D44] hover:cursor-pointer"
+                onClick={() => navigate("/signin")}
+              >
                 Login
               </div>
-              <div className="text-lg lg:text-xl font-semibold bg-[#031D44] px-7 py-2 rounded-full text-[#F2E3BC] hover:cursor-pointer" onClick={() => navigate("/signup")}>
+              <div
+                className="text-lg lg:text-xl font-semibold bg-[#031D44] px-7 py-2 rounded-full text-[#F2E3BC] hover:cursor-pointer"
+                onClick={() => navigate("/signup")}
+              >
                 Sign Up
               </div>
             </>
@@ -176,30 +189,43 @@ const Main = () => {
       {/* Home */}
       <div className="flex relative bg-[#FCF0CC] mt-10 md:mt-0 lg:mt-0">
         {/* Paw Images */}
-        <div className="absolute right-[15%] bottom-[5%] md:right-[72%] md:bottom-[75%]">
+        <div
+          className="absolute right-[70%] bottom-[80%] md:right-[75%] md:bottom-[78%]"
+          data-aos="zoom-in"
+          data-aos-delay="2000"
+        >
           <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-40 -rotate-45"
             src={dogFoot2}
             alt="Bottom Right"
           />
         </div>
-        <div className="absolute right-[20%] bottom-[40%] md:right-[55%] md:bottom-[65%]">
+        <div
+          className="absolute right-[35%] bottom-[60%] md:right-[58%] md:bottom-[68%]"
+          data-aos="zoom-in"
+          data-aos-delay="1500"
+        >
           <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-50 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-50 -rotate-45"
             src={dogFoot}
             alt="Top Left"
           />
         </div>
-        <div className="absolute right-[55%] bottom-[45%] md:right-[60%] md:bottom-[30%]">
+        <div
+          className="absolute right-[50%] bottom-[25%] md:right-[63%] md:bottom-[33%]"
+          data-aos="zoom-in"
+          data-aos-delay="1000"
+        >
           <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-40 -rotate-45"
             src={dogFoot2}
             alt="Bottom Left"
           />
         </div>
-        <div className="absolute right-[65%] bottom-[75%] md:right-[42%] md:bottom-[15%]">
+        <div className="absolute right-[15%] bottom-[5%] md:right-[45%] md:bottom-[18%]" data-aos="zoom-in"
+          data-aos-delay="500">
           <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-50 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-50 -rotate-45"
             src={dogFoot}
             alt="Top Right"
           />
@@ -216,9 +242,9 @@ const Main = () => {
           </div>
 
           {/* Book Now Button */}
-          <div 
-          className="bg-[#031D44] p-3 lg:p-6 w-[50%] md:w-[60%] lg:w-[40%] lg:mt-6 flex justify-center max-md:items-center md:text-xl lg:text-3xl font-bold text-[#FCF0CC] rounded-full hover:cursor-pointer hover:scale-105  ease-in duration-200"
-          onClick={() => navigate("/booking")} 
+          <div
+            className="bg-[#031D44] p-3 lg:p-6 w-[50%] md:w-[60%] lg:w-[40%] lg:mt-6 flex justify-center max-md:items-center md:text-xl lg:text-3xl font-bold text-[#FCF0CC] rounded-full hover:cursor-pointer hover:scale-105  ease-in duration-200"
+            onClick={() => navigate("/booking")}
           >
             <div>Book Now</div>
           </div>

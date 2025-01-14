@@ -138,7 +138,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
 
 // Booking
 const bookingBody = zod.object({
-    service: zod.string(),
+    service: zod.z.enum(["Pet Nursing", "Pet Grooming", "Pet Walking"]),
     day: zod.string().regex(/^\d{1,2}$/, "Invalid day format"),
     month: zod.string().regex(/^\d{1,2}$/, "Invalid month format"),
     year: zod.string().regex(/^\d{4}$/, "Invalid year format"),
@@ -196,8 +196,5 @@ router.post("/booking", async (req, res) => {
         });
     }
 });
-
-
-
 
 module.exports = router;

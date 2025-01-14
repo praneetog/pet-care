@@ -36,7 +36,7 @@ const Profile = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data); // Check if the data is returned as expected
+
         setUserData(response.data);
         setBookings(response.data.booked); // Set booking data here
       } catch (error) {
@@ -137,28 +137,30 @@ const Profile = () => {
       </div>
 
       {/* Bookings */}
-      <div className="">
-        <div className="bg-[#031D44] text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold py-20 lg:py-28">
+      <div className="bg-[#031D44]">
+        <div className="text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold pb-20 lg:py-28">
           Bookings
         </div>
 
         {/* Booking details rendering */}
         {bookings && bookings.length > 0 ? (
-          bookings.map((booking, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center bg-[#F2E3BC] text-[#031D44] p-6 mb-6 rounded-lg shadow-lg max-w-md mx-auto"
-            >
-              <h2 className="text-2xl font-bold mb-2">{booking.service}</h2>
-              <p className="text-lg font-semibold">{booking.place}</p>
-              <p className="text-md">{booking.appointmentDate}</p>
-              <p className="text-md">{booking.appointmentTime}</p>
-            </div>
-          ))
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 pb-24">
+            {bookings.map((booking, index) => (
+              <div
+                key={index}
+                className="flex flex-col items-center bg-[#F2E3BC] text-[#031D44] p-6 rounded-lg shadow-lg"
+              >
+                <div className="text-2xl font-bold mb-2">{booking.service}</div>
+                <div className="text-lg font-semibold">{booking.place}</div>
+                <div className="text-md">{booking.appointmentDate}</div>
+                <div className="text-md">{booking.appointmentTime}</div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <p className="text-center text-lg text-[#031D44]">
+          <div className="text-center text-lg text-[#F2E3BC] bg-[#031D44]">
             No bookings found
-          </p>
+          </div>
         )}
       </div>
     </div>
