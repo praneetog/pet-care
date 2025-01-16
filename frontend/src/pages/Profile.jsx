@@ -2,23 +2,25 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons"; // Import the arrow icon
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import dogFoot from "../assets/dogFoot.png";
 import dogFoot2 from "../assets/dogFoot2.png";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
-  const [bookings, setBookings] = useState([]); // State to store bookings data
+  const [bookings, setBookings] = useState([]);
+  const [showUpdatePassword, setShowUpdatePassword] = useState(false);
+  const [newPassword, setNewPassword] = useState("");
   const navigate = useNavigate();
 
   // Extract initials from full name
   const getInitials = (name) => {
-    if (!name) return ""; // Handle case where name is undefined
+    if (!name) return "";
     const nameArray = name.split(" ");
-    if (nameArray.length === 1) return nameArray[0].charAt(0).toUpperCase(); // For single name
+    if (nameArray.length === 1) return nameArray[0].charAt(0).toUpperCase();
     return (
       nameArray[0].charAt(0).toUpperCase() +
-      nameArray[1].charAt(0).toUpperCase() // First letter of first and last name
+      nameArray[1].charAt(0).toUpperCase()
     );
   };
 
@@ -38,7 +40,7 @@ const Profile = () => {
         });
 
         setUserData(response.data);
-        setBookings(response.data.booked); // Set booking data here
+        setBookings(response.data.booked);
       } catch (error) {
         console.error("Error fetching profile data:", error);
       }
@@ -49,57 +51,57 @@ const Profile = () => {
 
   // Handle Logout
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Clear the token from localStorage
-    localStorage.removeItem("fullName"); // Remove user name from localStorage
-    navigate("/home"); // Redirect to home page
+    localStorage.removeItem("token");
+    localStorage.removeItem("fullName");
+    navigate("/home");
   };
 
-  // Handle Back Button
-  const handleBack = () => {
-    navigate("/home");
+  // Handle Update Password Submission
+  const handleUpdatePassword = async (e) => {
+    e.preventDefault();
+
+    try {
+      const token = localStorage.getItem("token"); // Use the token directly
+      const response = await axios.post(
+        "http://localhost:3000/user/update-password",
+        { newPassword },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Password updated successfully!");
+      setShowUpdatePassword(false); // Close the update password form
+      setNewPassword("");
+    } catch (error) {
+      console.error("Error updating password:", error);
+      alert("Failed to update password. Please try again.");
+    }
   };
 
   return (
     <div className="h-full w-full">
-      <div className="bg-[#F2E3BC] flex flex-col gap-14 py-20">
+      <div className="bg-[#F2E3BC] flex flex-col gap-14 py-20 relative">
         {/* Back Button */}
         <div className="absolute top-6 left-6 md:top-10 md:left-10 lg:top-12 lg:left-12 cursor-pointer">
           <FontAwesomeIcon
             icon={faArrowLeft}
             size="xl"
             className="text-[#031D44] hover:scale-110 ease-in duration-200"
-            onClick={handleBack}
+            onClick={() => navigate("/home")}
           />
         </div>
 
-        {/* Paw Images */}
-        <div className="absolute right-[15%] bottom-[50%] md:right-[72%] md:bottom-[80%] lg:right-[72%] lg:bottom-[70%]">
-          <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
-            src={dogFoot2}
-            alt="Bottom Right"
-          />
-        </div>
-        <div className="absolute right-[20%] bottom-[65%] md:right-[30%] md:bottom-[75%] lg:right-[35%] lg:bottom-[60%]">
-          <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-35 -rotate-90"
-            src={dogFoot}
-            alt="Top Left"
-          />
-        </div>
-        <div className="absolute right-[60%] bottom-[70%] md:right-[55%] md:bottom-[50%] lg:right-[60%] lg:bottom-[30%]">
-          <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-40 -rotate-45"
-            src={dogFoot2}
-            alt="Bottom Left"
-          />
-        </div>
-        <div className="absolute right-[65%] bottom-[85%] md:right-[8%] md:bottom-[45%] lg:right-[10%] lg:bottom-[10%]">
-          <img
-            className="h-16 w-16 md:h-32 md:w-32 xl:h-40 xl:w-40 object-contain opacity-35 -rotate-90"
-            src={dogFoot}
-            alt="Top Right"
-          />
+        {/* Update Password Button */}
+        <div className="absolute top-6 right-6 md:top-10 md:right-10 lg:top-12 lg:right-12">
+          <button
+            onClick={() => setShowUpdatePassword(true)}
+            className="bg-[#031D44] text-[#F2E3BC] px-4 py-2 rounded-lg font-bold hover:bg-[#02234d]"
+          >
+            Update Password
+          </button>
         </div>
 
         <div className="flex justify-center items-center">
@@ -121,9 +123,7 @@ const Profile = () => {
             <p className="text-[#031D44] text-md md:text-xl font-bold mt-2">
               Phone: {userData.phone}
             </p>
-            {/* Add other user details here */}
 
-            {/* Logout Button */}
             <button
               onClick={handleLogout}
               className="flex justify-center text-center bg-[#031D44] text-[#F2E3BC] md:text-2xl font-bold lg:text-3xl px-6 py-2 md:px-16 md:py-6 mt-16 rounded-full"
@@ -136,9 +136,43 @@ const Profile = () => {
         )}
       </div>
 
+      {/* Update Password Form */}
+      {showUpdatePassword && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="p-6 rounded-lg shadow-lg max-w-md w-full bg-[#F2E3BC]">
+            <h2 className="text-xl font-bold mb-4 text-[#031D44]">Update Password</h2>
+            <form onSubmit={handleUpdatePassword}>
+              <input
+                type="password"
+                placeholder="Enter new password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                className="w-full border border-[#031D44] p-2 mb-4 rounded"
+                required
+              />
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => setShowUpdatePassword(false)}
+                  className="text-[#031D44] px-4 py-2 rounded mr-2 font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-[#031D44] text-[#F2E3BC] px-4 py-2 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Bookings */}
       <div className="bg-[#031D44]">
-        <div className="text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold pb-20 lg:py-28">
+        <div className="text-[#F2E3BC] flex justify-center text-center text-4xl md:text-6xl font-bold pb-16 py-16 lg:py-28">
           Bookings
         </div>
 

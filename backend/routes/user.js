@@ -197,4 +197,44 @@ router.post("/booking", async (req, res) => {
     }
 });
 
+// Schema for update password request
+const updatePasswordBody = zod.object({
+    newPassword: zod.string().min(8, "Password must be at least 8 characters long"),
+});
+
+// Update Password Route
+router.post("/update-password", authMiddleware, async (req, res) => {
+    const { success, data, error } = updatePasswordBody.safeParse(req.body);
+    if (!success) {
+        return res.status(400).json({
+            message: "Invalid input",
+            error: error.errors,
+        });
+    }
+
+    try {
+        // Find the user using the `userId` from the middleware
+        const user = await User.findById(req.userId);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        // Update the user's password
+        user.password = data.newPassword;
+        await user.save();
+
+        res.json({
+            message: "Password updated successfully",
+        });
+    } catch (error) {
+        console.error("Error updating password:", error);
+        res.status(500).json({
+            message: "Internal server error",
+        });
+    }
+});
+
 module.exports = router;
