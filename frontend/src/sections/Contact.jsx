@@ -10,8 +10,8 @@ const Contact = () => {
   }, []);
 
   return (
-    <footer className="max-container bg-[#031D44] pt-16 pb-4 px-8">
-      <div className="w-full flex justify-center text-center text-[#F2E3BC] text-7xl font-extrabold pb-16">
+    <footer id="contact" className="max-container bg-[#031D44] pt-16 pb-4 px-8">
+      <div className="w-full flex justify-center text-center text-[#F2E3BC] text-5xl lg:text-7xl font-extrabold pb-16">
         Contact Us
       </div>
       <div className="w-full flex justify-between items-start gap-20 lg:gap-80 flex-wrap max-lg:flex-col">

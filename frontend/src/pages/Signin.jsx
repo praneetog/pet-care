@@ -26,9 +26,9 @@ const Signin = () => {
         {/* Form Div */}
         <div className="relative w-full flex flex-col justify-center items-center">
           {/* Corner Images */}
-          <div className="max-lg:hidden absolute -top-[75%] lg:-top-[30%] left-0">
+          <div className="max-lg:hidden absolute -top-[75%] lg:-top-[40%] left-0">
             <img
-              className="w-36 h-36 object-contain -rotate-90 opacity-60"
+              className="w-36 h-36 object-contain -rotate-90"
               src={dogFoot}
               alt="Top Left"
             />
@@ -40,14 +40,14 @@ const Signin = () => {
               alt="Bottom Right"
             />
           </div>
-          <div className="max-lg:hidden absolute -bottom-[75%] lg:-bottom-[30%] right-0">
+          <div className="max-lg:hidden absolute -bottom-[75%] lg:-bottom-[40%] right-0">
             <img
               className="w-36 h-36 object-contain"
               src={dogFoot}
               alt="Top Right"
             />
           </div>
-          <div className="absolute -bottom-[30%] md:-bottom-[30%] left-[5%]">
+          <div className="absolute -bottom-[30%] lg:-bottom-[30%] left-[5%]">
             <img
               className="h-28 w-28 lg:w-36 lg:h-36 object-contain -rotate-45"
               src={dogFoot2}

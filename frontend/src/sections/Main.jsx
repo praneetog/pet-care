@@ -206,7 +206,7 @@ const Main = () => {
           data-aos-delay="1500"
         >
           <img
-            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-50 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-40 -rotate-45"
             src={dogFoot}
             alt="Top Left"
           />
@@ -222,10 +222,13 @@ const Main = () => {
             alt="Bottom Left"
           />
         </div>
-        <div className="absolute right-[15%] bottom-[5%] md:right-[45%] md:bottom-[18%]" data-aos="zoom-in"
-          data-aos-delay="500">
+        <div
+          className="absolute right-[15%] bottom-[5%] md:right-[45%] md:bottom-[18%]"
+          data-aos="zoom-in"
+          data-aos-delay="500"
+        >
           <img
-            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-50 -rotate-45"
+            className="h-16 w-16 md:h-24 md:w-24 lg:h-40 lg:w-40 object-contain opacity-40 -rotate-45"
             src={dogFoot}
             alt="Top Right"
           />
@@ -240,11 +243,19 @@ const Main = () => {
             simplest moments. They leave pawprints on our hearts that stay with
             us forever.
           </div>
-
+          
           {/* Book Now Button */}
           <div
-            className="bg-[#031D44] p-3 lg:p-6 w-[50%] md:w-[60%] lg:w-[40%] lg:mt-6 flex justify-center max-md:items-center md:text-xl lg:text-3xl font-bold text-[#FCF0CC] rounded-full hover:cursor-pointer hover:scale-105  ease-in duration-200"
-            onClick={() => navigate("/booking")}
+            className="bg-[#031D44] p-3 lg:p-6 w-[50%] md:w-[60%] lg:w-[40%] lg:mt-6 flex justify-center max-md:items-center md:text-xl lg:text-3xl font-bold text-[#FCF0CC] rounded-full hover:cursor-pointer hover:scale-105 ease-in duration-200"
+            onClick={() => {
+              const token = localStorage.getItem("token");
+              if (token) {
+                navigate("/booking"); // Navigate to the booking page
+              } else {
+                alert("Please login first.");
+                navigate("/signin"); // Redirect to login page
+              }
+            }}
           >
             <div>Book Now</div>
           </div>

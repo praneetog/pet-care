@@ -5,6 +5,7 @@ import bookingCat from "../assets/bookingCat.png";
 import bookingCatPhone from "../assets/bookingCatPhone.png";
 import Logo from "../assets/Logo.png";
 
+
 const BookingForm = () => {
   const [formData, setFormData] = useState({
     service: "",
@@ -90,7 +91,7 @@ const BookingForm = () => {
         src={bookingDog}
       />
       <form
-        className="md:w-[70%] lg:w-[30%] lg:bg-[#031D44] flex flex-col lg:px-5 lg:py-9 lg:rounded-3xl"
+        className="md:w-[70%] lg:w-[35%] lg:bg-[#031D44] flex flex-col lg:px-5 lg:py-9 lg:rounded-3xl"
         onSubmit={handleSubmit}
       >
         <div className="flex justify-center text-2xl md:text-4xl text-[#F2E3BC] font-bold pb-4">

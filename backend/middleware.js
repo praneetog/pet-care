@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    // Check if the Authorization header exists and starts with 'Bearer '
+    // Authorization header starts with 'Bearer '
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).json({
             message: "Authorization header is missing or invalid"
@@ -19,8 +19,7 @@ const authMiddleware = (req, res, next) => {
 
         // Attach user ID to the request object
         req.userId = decoded.userId;
-
-        // Proceed to the next middleware or route handler
+        
         next();
     } catch (err) {
         console.error("JWT verification error:", err);

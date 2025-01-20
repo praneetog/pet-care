@@ -11,7 +11,7 @@ const signupBody = zod.object({
     fullName: zod.string(),
     phone: zod.string(),
     email: zod.string().email(),
-	password: zod.string()
+	password: zod.string().min(8)
 })
 
 
@@ -104,9 +104,9 @@ router.post("/signin", async (req, res) => {
 router.get("/profile", authMiddleware, async (req, res) => {
     try {
         // Fetch user data using the `userId` from the middleware
-        const user = await User.findById(req.userId).select("fullName phone email");
+        const user = await User.findById(req.userId)
         const bookingData = await Booking.find({user:req.userId})
-
+        
         if (!user) {
             return res.status(404).json({
                 message: "User not found"
@@ -120,7 +120,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
                 email: user.email
             });
         }
-
+        
         // Return user profile data
         res.json({
             fullName: user.fullName,
@@ -237,4 +237,4 @@ router.post("/update-password", authMiddleware, async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router;    

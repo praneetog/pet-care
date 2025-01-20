@@ -3,8 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import dogFoot from "../assets/dogFoot.png";
-import dogFoot2 from "../assets/dogFoot2.png";
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -192,7 +190,7 @@ const Profile = () => {
             ))}
           </div>
         ) : (
-          <div className="text-center text-lg text-[#F2E3BC] bg-[#031D44]">
+          <div className="text-center text-lg text-[#F2E3BC] bg-[#031D44] pb-24">
             No bookings found
           </div>
         )}
